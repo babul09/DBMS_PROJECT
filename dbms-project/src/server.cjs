@@ -31,6 +31,61 @@ app.get("/api/employees/:id", (req, res) => {
   })
 })
 
+// Department
+app.get("/api/departments/:id", (req, res) => {
+  db.query("SELECT * FROM Department WHERE DepartmentID = ?", [req.params.id], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message })
+    if (!rows.length) return res.status(404).json({ error: "Not found" })
+    res.json(rows[0])
+  })
+})
+
+// Project
+app.get("/api/projects/:id", (req, res) => {
+  db.query("SELECT * FROM Project WHERE ProjectID = ?", [req.params.id], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message })
+    if (!rows.length) return res.status(404).json({ error: "Not found" })
+    res.json(rows[0])
+  })
+})
+
+// WorksOn (composite key, expects id as "EmployeeID,ProjectID")
+app.get("/api/works-ons/:id", (req, res) => {
+  const [EmployeeID, ProjectID] = req.params.id.split(",")
+  db.query("SELECT * FROM WorksOn WHERE EmployeeID = ? AND ProjectID = ?", [EmployeeID, ProjectID], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message })
+    if (!rows.length) return res.status(404).json({ error: "Not found" })
+    res.json(rows[0])
+  })
+})
+
+// LeaveRecords
+app.get("/api/leave-records/:id", (req, res) => {
+  db.query("SELECT * FROM LeaveRecords WHERE ID = ?", [req.params.id], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message })
+    if (!rows.length) return res.status(404).json({ error: "Not found" })
+    res.json(rows[0])
+  })
+})
+
+// Benefits
+app.get("/api/benefits/:id", (req, res) => {
+  db.query("SELECT * FROM Benefits WHERE BenefitID = ?", [req.params.id], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message })
+    if (!rows.length) return res.status(404).json({ error: "Not found" })
+    res.json(rows[0])
+  })
+})
+
+// Dependent
+app.get("/api/dependents/:id", (req, res) => {
+  db.query("SELECT * FROM Dependent WHERE DependentID = ?", [req.params.id], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message })
+    if (!rows.length) return res.status(404).json({ error: "Not found" })
+    res.json(rows[0])
+  })
+})
+
 // Example: Use your view
 app.get("/api/employee-project-details", (req, res) => {
   db.query("SELECT * FROM EmployeeProjectDetails", (err, results) => {
